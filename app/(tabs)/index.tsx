@@ -1,74 +1,156 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import React,{useEffect, useState} from 'react';
+import { View, Text, StyleSheet, ImageBackground, SafeAreaView } from 'react-native';
+import { BlurView } from "expo-blur";
+import { ScrollView,GestureHandlerRootView } from 'react-native-gesture-handler';
+import weatherThemes from '../theme';
+import WeatherCard  from "../../components/WeatherCard";
+import WeeklyForecast from "../../components/WeeklyForecast";
+import CurrentWeatherCard from "../../components/CurrentWeatherCard";
+import axios from 'axios';
+import DailyForcast from '@/components/DailyForecast';
+/*export default function HomeScreen() {
+  const theme = weatherThemes.rainy;
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-
-export default function HomeScreen() {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12'
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <SafeAreaView style={{ flex: 1 }}>
+      <ImageBackground
+        source={theme.backgroundGif}
+        style={styles.background}
+        resizeMode="cover"
+      >
+        <BlurView intensity={30} tint="light" style={styles.blurContainer}>
+          <View style={[styles.container, { backgroundColor: `${theme.colors.primary}90` }]}>
+            <Text style={{ color: theme.colors.textMain, fontSize: theme.fontSizes.header, fontWeight: 'bold' }}>
+              Tizi-Ouzou
+            </Text>
+            <Text style={{ color: theme.colors.textSecondary, fontSize: theme.fontSizes.subtext, fontWeight: '500' }}>
+              Rainy Day 10°C
+            </Text>
+
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{ paddingHorizontal: 15, alignItems: 'center' }}
+            >
+              <WeatherCard time="15:00" temperature={25} condition="Cloudy" />
+              <WeatherCard time="15:00" temperature={25} condition="Cloudy" />
+              <WeatherCard time="15:00" temperature={25} condition="Cloudy" />
+              <WeatherCard time="15:00" temperature={25} condition="Cloudy" />
+              <WeatherCard time="16:00" temperature={26} condition="Rainy" />
+              <WeatherCard time="17:00" temperature={24} condition="Sunny" />
+              <WeatherCard time="17:00" temperature={24} condition="Sunny" />
+            </ScrollView>
+          </View>
+        </BlurView>
+      </ImageBackground>
+    </SafeAreaView>
   );
 }
 
+{hourlyData.map((hour : any, index:any) => (
+  <WeatherCard
+    key={index}
+    time={new Date(hour.dt * 1000).getHours() + ":00"}
+    temperature={Math.round(hour.main.temp)}
+    condition={hour.weather[0].main}
+    icon={`https://openweathermap.org/img/wn/${hour.weather[0].icon}@2x.png`}
+  />
+))}
+*/
+export default function HomeScreen() {
+  const [hourlyData, setHourlyData] = useState([]);
+  const [weeklyData, setWeeklyData] = useState<any[]>([]);
+  const [city, setCity] = useState("Tizi-Ouzou") // Default city
+  const [currentData, setCurrentData] = useState<any>(null);
+  const theme = weatherThemes.rainy; // later you can make it dynamic based on weather
+
+  useEffect(() => {
+    fetchWeather();
+  }, []);
+
+  const fetchWeather = async () => {
+    const API_KEY = '693065354fb731c63bf96f434d2c8aee';
+    const LAT = '36.7'; // example Tizi-Ouzou
+    const LON = '4.05';
+    
+    try {
+      const response = await axios.get(
+        `https://api.openweathermap.org/data/2.5/forecast?lat=${LAT}&lon=${LON}&units=metric&appid=${API_KEY}`
+      );
+      const list = response.data.list;
+
+      const days = list.filter((item: any) => item.dt_txt.includes('12:00:00')).slice(0, 7); 
+          const weekly = days.map((day: any) => ({
+            date: new Date(day.dt * 1000).toLocaleDateString('en-US', { weekday: 'short', day: 'numeric' }),
+            temp: Math.round(day.main.temp),
+            condition: day.weather[0].main,
+            icon: `https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`
+          }));
+          setWeeklyData(weekly);
+      setHourlyData(response.data.list.slice(0, 15)); 
+
+      const currentRes = await axios.get(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${LAT}&lon=${LON}&units=metric&appid=${API_KEY}`
+      );
+      setCurrentData(currentRes.data);
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
+ 
+
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <ImageBackground source={theme.backgroundGif} style={styles.background} resizeMode="cover">
+          <BlurView intensity={30} tint="light" style={styles.blurContainer}>
+            <ScrollView>
+              <View style={[styles.container, { backgroundColor: `${theme.colors.primary}90` }]}>
+              {/*<Text style={{ color: theme.colors.textMain, fontSize: theme.fontSizes.header, fontWeight: 'bold' }}>
+                Tizi-Ouzou
+              </Text>
+
+              <Text style={{ color: theme.colors.textSecondary, fontSize: theme.fontSizes.subtext, fontWeight: '500' }}>
+                Today's Weather
+              </Text>
+            */}
+                <CurrentWeatherCard data = {currentData}/>
+
+             {/*<ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ padding: 20 }}>
+                    {hourlyData.map((hour: any, index: number) => (
+                      <WeatherCard
+                        key={index}
+                        time={new Date(hour.dt * 1000).getHours() + ":00"}
+                        temperature={Math.round(hour.main.temp)}
+                        condition={hour.weather[0].main}
+                        icon={`https://openweathermap.org/img/wn/${hour.weather[0].icon}@2x.png`}
+                      />
+                    ))}
+              </ScrollView>
+              */} 
+                <DailyForcast data={hourlyData}/>
+                <WeeklyForecast data={weeklyData} />
+              </View>
+            </ScrollView>    
+          </BlurView>
+        </ImageBackground>
+    </GestureHandlerRootView>
+    </SafeAreaView>
+  );
+}
+
+
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  background: {
+    flex: 1,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  blurContainer: {
+    flex: 1,
   },
 });
