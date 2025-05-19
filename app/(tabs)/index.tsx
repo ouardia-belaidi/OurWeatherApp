@@ -8,55 +8,7 @@ import WeeklyForecast from "../../components/WeeklyForecast";
 import CurrentWeatherCard from "../../components/CurrentWeatherCard";
 import axios from 'axios';
 import DailyForcast from '@/components/DailyForecast';
-/*export default function HomeScreen() {
-  const theme = weatherThemes.rainy;
 
-  return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <ImageBackground
-        source={theme.backgroundGif}
-        style={styles.background}
-        resizeMode="cover"
-      >
-        <BlurView intensity={30} tint="light" style={styles.blurContainer}>
-          <View style={[styles.container, { backgroundColor: `${theme.colors.primary}90` }]}>
-            <Text style={{ color: theme.colors.textMain, fontSize: theme.fontSizes.header, fontWeight: 'bold' }}>
-              Tizi-Ouzou
-            </Text>
-            <Text style={{ color: theme.colors.textSecondary, fontSize: theme.fontSizes.subtext, fontWeight: '500' }}>
-              Rainy Day 10°C
-            </Text>
-
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={{ paddingHorizontal: 15, alignItems: 'center' }}
-            >
-              <WeatherCard time="15:00" temperature={25} condition="Cloudy" />
-              <WeatherCard time="15:00" temperature={25} condition="Cloudy" />
-              <WeatherCard time="15:00" temperature={25} condition="Cloudy" />
-              <WeatherCard time="15:00" temperature={25} condition="Cloudy" />
-              <WeatherCard time="16:00" temperature={26} condition="Rainy" />
-              <WeatherCard time="17:00" temperature={24} condition="Sunny" />
-              <WeatherCard time="17:00" temperature={24} condition="Sunny" />
-            </ScrollView>
-          </View>
-        </BlurView>
-      </ImageBackground>
-    </SafeAreaView>
-  );
-}
-
-{hourlyData.map((hour : any, index:any) => (
-  <WeatherCard
-    key={index}
-    time={new Date(hour.dt * 1000).getHours() + ":00"}
-    temperature={Math.round(hour.main.temp)}
-    condition={hour.weather[0].main}
-    icon={`https://openweathermap.org/img/wn/${hour.weather[0].icon}@2x.png`}
-  />
-))}
-*/
 export default function HomeScreen() {
   const [hourlyData, setHourlyData] = useState([]);
   const [weeklyData, setWeeklyData] = useState<any[]>([]);
@@ -107,29 +59,11 @@ export default function HomeScreen() {
           <BlurView intensity={30} tint="light" style={styles.blurContainer}>
             <ScrollView>
               <View style={[styles.container, { backgroundColor: `${theme.colors.primary}90` }]}>
-              {/*<Text style={{ color: theme.colors.textMain, fontSize: theme.fontSizes.header, fontWeight: 'bold' }}>
-                Tizi-Ouzou
-              </Text>
 
-              <Text style={{ color: theme.colors.textSecondary, fontSize: theme.fontSizes.subtext, fontWeight: '500' }}>
-                Today's Weather
-              </Text>
-            */}
                 <CurrentWeatherCard data = {currentData}/>
-
-             {/*<ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ padding: 20 }}>
-                    {hourlyData.map((hour: any, index: number) => (
-                      <WeatherCard
-                        key={index}
-                        time={new Date(hour.dt * 1000).getHours() + ":00"}
-                        temperature={Math.round(hour.main.temp)}
-                        condition={hour.weather[0].main}
-                        icon={`https://openweathermap.org/img/wn/${hour.weather[0].icon}@2x.png`}
-                      />
-                    ))}
-              </ScrollView>
-              */} 
+                
                 <DailyForcast data={hourlyData}/>
+                
                 <WeeklyForecast data={weeklyData} />
               </View>
             </ScrollView>    
