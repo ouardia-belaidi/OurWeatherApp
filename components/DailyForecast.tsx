@@ -9,7 +9,7 @@ interface DailyForecastProps {
 
 export default function DailyForcast({ data }: DailyForecastProps){
     return(
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.container }>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={ styles.container}>
                     {data.map((hour: any, index: number) => (
                       <WeatherCard
                         key={index}
