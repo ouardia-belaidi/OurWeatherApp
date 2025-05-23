@@ -12,11 +12,11 @@ interface WeatherData {
   weeklyData: any[];
 }
 
-export function useFetchWeather(latitude : number | null,longitude:number | null) :WeatherData {
+export function useFetchWeather(latitude : number | null,longitude:number | null, city : string) :WeatherData {
     const [hourlyData, setHourlyData] = useState([]);
     const [weeklyData, setWeeklyData] = useState<any[]>([]);
     const [currentData, setCurrentData] = useState<any>(null);
-    const city = "Tizi-Ouzou"
+    //const city = "Malmo"
     const API_KEY = '693065354fb731c63bf96f434d2c8aee';
     
     useEffect(() => {

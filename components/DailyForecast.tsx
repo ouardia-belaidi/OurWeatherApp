@@ -9,7 +9,8 @@ interface DailyForecastProps {
 
 export default function DailyForcast({ data }: DailyForecastProps){
     return(
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={ styles.container}>
+      <View style={styles.container}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                     {data.map((hour: any, index: number) => (
                       <WeatherCard
                         key={index}
@@ -20,15 +21,24 @@ export default function DailyForcast({ data }: DailyForecastProps){
                       />
                     ))}
         </ScrollView>
+      </View>
+        
     );
-   
-  
 }
 
 const styles = StyleSheet.create({
-    container: {
-      borderColor:"#555",
-      paddingHorizontal: 20,
-      paddingVertical: 12,
-    },
-  });
+  container: {
+    margin : 10,
+    marginTop: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 16,
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    overflow: 'hidden',
+    height: 170, // Adjust this based on card height
+  },
+  scrollContent: {
+    alignItems: 'center',
+    gap: 12, // space between cards
+  },
+});
