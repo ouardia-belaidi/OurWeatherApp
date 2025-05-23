@@ -79,7 +79,7 @@ utils/
 ...
 
 ## 📸 UI Preview
-![Clouds](https://github.com/user-attachments/assets/d2ee620b-911b-4207-9abd-26c52beb4aeb)
+![Clouds](https://github.com/user-attachments/assets/abd337a4-0f33-4b87-b189-8c0d22c08091)
 ![Clear](https://github.com/user-attachments/assets/bfabf4b6-68fa-4a78-bfdb-6e6c948e85f7)
 
 
