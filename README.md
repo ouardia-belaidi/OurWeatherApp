@@ -1,50 +1,88 @@
-# Welcome to your Expo app 👋
+# 🌤️ OurWeatherApp
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A modern, theme-based weather forecast app built with **React Native**, **Expo**, and the **OpenWeatherMap API**. 
+This app displays current weather, hourly and weekly forecasts, weather-based tips, and keeps track of your recent city searches.
 
-## Get started
+## 📱 Features
 
-1. Install dependencies
+* 🌍 Fetch weather by city or current location (with permissions)
+* 🗕️ 5-days and hourly weather forecast
+* 🎨 Dynamic UI themes based on weather condition and time of day
+* 💡 Lifestyle tips based on forecast
+* 🔎 Search for cities and store search history
+* 🧠 Modular hooks and reusable components
 
-   ```bash
+## 🏗️ Project Structure
+app/
+├── (tabs)/
+│   ├── index.tsx                # Home screen with all weather data
+│
+├── search-history.tsx          # History screen showing recent searches
+│
+components/
+├── SearchBar.tsx               # City search input
+├── WeatherCard.tsx             # Weather condition card
+├── WeeklyForecast.tsx          # 7-day forecast
+├── DailyForecast.tsx           # Hourly forecast
+├── CurrentWeatherCard.tsx      # Current weather section
+├── Tips.tsx                    # Dynamic weather tips section
+│
+hooks/
+├── useLocation.ts              # Get current geolocation
+├── useFetchWeather.tsx         # Custom hook to fetch weather data
+├── useSearch.tsx               # Search state management (city, history)
+│
+themes/
+├── theme.ts                    # Theme logic based on weather & time
+├── theme2.ts                   # Theme configurations (colors, backgrounds)
+│
+utils/
+├── getTips.ts                  # Get weather tips based on condition
+├── history.ts                  # AsyncStorage save/load logic
+
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+* Node.js (LTS)
+* Expo CLI
+* OpenWeatherMap API key
+
+### Installation
+
+1. Clone the repository:
+
+   git clone https://github.com/yourusername/MyWeatherApp.git
+   cd MyWeatherApp
+
+
+2. Install dependencies:
+
    npm install
-   ```
+   
 
-2. Start the app
+3. Run the project:
 
-   ```bash
-    npx expo start
-   ```
+   npx expo start
 
-In the output, you'll find options to open the app in a
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+4. Scan the QR code using Expo Go on your phone or run it on an emulator.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## 🧹 Technologies Used
 
-## Get a fresh project
+* [React Native](https://reactnative.dev/)
+* [Expo](https://expo.dev/)
+* [OpenWeatherMap API](https://openweathermap.org/)
+* [React Navigation + Expo Router](https://expo.github.io/router/docs)
+* [AsyncStorage](https://react-native-async-storage.github.io/async-storage/)
+...
 
-When you're ready, run:
+## 📸 UI Preview
+![Clouds](https://github.com/user-attachments/assets/d2ee620b-911b-4207-9abd-26c52beb4aeb)
+![Clear](https://github.com/user-attachments/assets/bfabf4b6-68fa-4a78-bfdb-6e6c948e85f7)
 
-```bash
-npm run reset-project
-```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+**Developed with ❤️ by Dihia , Lynda & Ouardia .**
