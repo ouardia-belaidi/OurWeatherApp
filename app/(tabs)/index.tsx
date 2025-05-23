@@ -16,7 +16,6 @@ import { getWeatherTips } from '@/utils/getTips';
 import { router, useLocalSearchParams, useRouter } from 'expo-router';
 import SearchBar from '@/components/SearchBar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { saveToHistory } from '@/utils/history';
 import SearchHistory from '../search-history';
 import { useSearch } from '@/hooks/useSearch';
 
@@ -34,7 +33,7 @@ export default function HomeScreen() {
   const currentTime = Math.floor(Date.now() / 1000);
   const tipsData = getWeatherTips(currentCondition ?? 'default');
   const theme = getTheme(currentCondition ?? 'default', currentTime,sunriseUTC,sunsetUTC);
-  console.log(theme)
+  //console.log(theme)
   //console.log(new Date(currentTime * 1000).getHours())
   //console.log("Sunrise:", new Date(sunriseUTC * 1000).toLocaleTimeString());
   //console.log("Sunset:", new Date(sunsetUTC * 1000).toLocaleTimeString());

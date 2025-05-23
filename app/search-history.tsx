@@ -4,6 +4,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter, useFocusEffect } from 'expo-router';
 import SearchBar from '@/components/SearchBar';
 import { saveToHistory } from '@/utils/history';
+import { IconSymbol } from '@/app-example/components/ui/IconSymbol.ios';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function SearchHistory() {
   const [history, setHistory] = useState<string[]>([]);
@@ -40,22 +42,42 @@ export default function SearchHistory() {
     await fetchHistory();
     router.replace(`/?city=${city}`);
   };
+  const handleDeleteItem = async (indexToDelete: number) => {
+    const updated = history.filter((_, index) => index !== indexToDelete);
+    setHistory(updated);
+    await AsyncStorage.removeItem('search-history');
+  };
 
+  const handleClearAll = async () => {
+    setHistory([]);
+    await AsyncStorage.removeItem('search-history');
+  };
   return (
     <View style={styles.container}>
-      <SearchBar onSearch={handleSearch} />
-      <Text style={styles.title}>Historique des recherches</Text>
+      <SearchBar onSearch={handleSearch}/>
+      {/*<View style={styles.item}>
+        <Text style={styles.title}>Search history </Text>
+        <Ionicons  name={"time-outline"} size={28} color="#007AFF"/>
+      </View>*/}
       {history.length === 0 ? (
         <Text style={styles.empty}>Aucune recherche récente.</Text>
       ) : (
         <FlatList
           data={history}
           keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => (
+          renderItem={({ item,index }) => (
             <TouchableOpacity onPress={() => handleSelect(item)} style={styles.item}>
               <Text>{item}</Text>
+              <Ionicons name="close" size={20} color="gray" onPress={() => handleDeleteItem(index)}/>
             </TouchableOpacity>
           )}
+          ListHeaderComponent={
+          history.length > 0 ? (
+            <TouchableOpacity onPress={handleClearAll} style={styles.clearAllContainer}>
+              <Text style={styles.clearAllText}>Clear All</Text>
+            </TouchableOpacity>
+      ) : null
+    }
         />
       )}
     </View>
@@ -63,18 +85,30 @@ export default function SearchHistory() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: '#fff' },
-  title: { fontSize: 22, fontWeight: 'bold',   marginTop: 30,marginBottom: 20 },
+  container: { flex: 1, padding: 15, backgroundColor: '#fff' },
+  title: { fontSize: 18, fontWeight: 'bold',   marginTop: 30,marginBottom: 20 },
   item: {
-    padding: 12,
+    padding: 20,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
-    
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between', // ensures 2 items per row
   },
   empty: {
     fontSize: 16,
     color: '#888',
     marginTop: 20,
     textAlign: 'center',
+  },
+  clearAllContainer: {
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  clearAllText: {
+    color: '#999',
+    fontWeight: 'bold',
+    fontSize: 16,
+    marginLeft: '70%',
   },
 });

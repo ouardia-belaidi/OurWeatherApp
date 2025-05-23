@@ -1,5 +1,6 @@
+import { router } from 'expo-router';
 import React from 'react';
-import { View, Text,StyleSheet,Image } from 'react-native';
+import { View, Text,StyleSheet,Image, Touchable, TouchableOpacity } from 'react-native';
 
 
 interface CurrentWeatherProps {
@@ -9,8 +10,16 @@ interface CurrentWeatherProps {
 
 export default function CurrentWeatherCard( {data} :CurrentWeatherProps){
     if (!data) return null;
+const handlePress = (item: CurrentWeatherProps) => {
+  router.push({
+    pathname: '../details',
+    params: {
+      data: JSON.stringify(data),
+    },
+  });
+  }
     return(
-        <View style={styles.card}>
+        <TouchableOpacity style={styles.card} onPress={() => handlePress(data)}>
                 <Text style={styles.city}>{data.name}</Text>
                 <Image
                     source={{ uri: `https://openweathermap.org/img/wn/${data.weather[0].icon}@4x.png` }}
@@ -21,7 +30,7 @@ export default function CurrentWeatherCard( {data} :CurrentWeatherProps){
                 <Text style={styles.condition}>{data.weather[0].main}</Text>
                 <Text style={styles.details}>Max : {data.main.temp_max !== null ? `${Math.round(data.main.temp_max)}°` : "--"}    Min : {data.main.temp_min !== null ? `${Math.round(data.main.temp_min)}°` : "--"}</Text>
                 <Text style={styles.wind}>Wind : {data.wind.speed !== null ? `${Math.round(data.wind.speed)} Km/h` : "--"}</Text>  
-        </View>
+        </TouchableOpacity>
     );
 }
 

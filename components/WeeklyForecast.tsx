@@ -1,6 +1,5 @@
 import React from 'react';
-import { View, Text,StyleSheet,Image } from 'react-native';
-import { FlatList,GestureHandlerRootView } from 'react-native-gesture-handler';
+import { View, Text,StyleSheet,Image, TouchableOpacity } from 'react-native';
 
 interface ForecastItem {
     date: string;
@@ -14,16 +13,17 @@ interface WeeklyForecastProps {
   }
   
   export default function WeeklyForecast({ data }: WeeklyForecastProps) {
+
     return (
       <View style={styles.container}>
         <Text style={styles.title}>5 days weather forecast</Text>
         {data.map((item, index) => (
-        <View key={index} style={styles.item}>
-          <Text style={styles.date}>{item.date}</Text>
-          <Image source={{ uri: item.icon }} style={styles.icon} />
-          <Text style={styles.temp}>{item.temp}°C</Text>
-          <Text style={styles.condition}>{item.condition}</Text>
-        </View>
+          <View key={index} style={styles.item}>
+            <Text style={styles.date}>{item.date}</Text>
+            <Image source={{ uri: item.icon }} style={styles.icon} />
+            <Text style={styles.temp}>{item.temp}°C</Text>
+            <Text style={styles.condition}>{item.condition}</Text>
+          </View>
          ))}
       </View>
     );

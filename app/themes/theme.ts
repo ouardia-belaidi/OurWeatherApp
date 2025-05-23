@@ -60,27 +60,22 @@ export function getTheme(
     (['clear', 'clouds', 'rain', 'snow', 'wind'].find((k) =>
       normalized.includes(k)
     ) as WeatherCondition) || 'clear';
-  /*const key : WeatherCondition = (
-    condition == 'rain' || 'drizzle' ? 'rainy'
-    : condition == 'snow' ? 'snowy'
-    : condition == 'wind' ? 'windy'
-    :
-  ) as WeatherCondition || 'clear';*/
+  
   // Convert UNIX times to JS Date
   const currentDate = new Date(currentTime * 1000); // make sure it's * 1000
-const currentHour = currentDate.getHours();
+  const currentHour = currentDate.getHours();
 
-const sunriseHour = new Date(sunriseUTC * 1000).getHours();
-const sunsetHour = new Date(sunsetUTC * 1000).getHours();
+  const sunriseHour = new Date(sunriseUTC * 1000).getHours();
+  const sunsetHour = new Date(sunsetUTC * 1000).getHours();
 
-const timeOfDay: TimeOfDay =
-  currentHour < sunriseHour
-    ? 'night'
-    : currentHour < sunsetHour - 1
-    ? 'day'
-    : currentHour <= sunsetHour + 1
-    ? 'sunset'
-    : 'night';
+  const timeOfDay: TimeOfDay =
+    currentHour < sunriseHour
+      ? 'night'
+      : currentHour < sunsetHour - 1
+      ? 'day'
+      : currentHour <= sunsetHour + 1
+      ? 'sunset'
+      : 'night';
 
-  return typedThemes[key][timeOfDay];
-}
+    return typedThemes[key][timeOfDay];
+  }
