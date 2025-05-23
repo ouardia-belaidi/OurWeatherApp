@@ -13,34 +13,7 @@ This app displays current weather, hourly and weekly forecasts, weather-based ti
 * 🧠 Modular hooks and reusable components
 
 ## 🏗️ Project Structure
-'''
-app/
-├── (tabs)/
-│   ├── index.tsx                # Home screen with all weather data
-│
-├── search-history.tsx          # History screen showing recent searches
-│
-components/
-├── SearchBar.tsx               # City search input
-├── WeatherCard.tsx             # Weather condition card
-├── WeeklyForecast.tsx          # 7-day forecast
-├── DailyForecast.tsx           # Hourly forecast
-├── CurrentWeatherCard.tsx      # Current weather section
-├── Tips.tsx                    # Dynamic weather tips section
-│
-hooks/
-├── useLocation.ts              # Get current geolocation
-├── useFetchWeather.tsx         # Custom hook to fetch weather data
-├── useSearch.tsx               # Search state management (city, history)
-│
-themes/
-├── theme.ts                    # Theme logic based on weather & time
-├── theme2.ts                   # Theme configurations (colors, backgrounds)
-│
-utils/
-├── getTips.ts                  # Get weather tips based on condition
-├── history.ts                  # AsyncStorage save/load logic
-'''
+![image](https://github.com/user-attachments/assets/78a31b8f-0c77-43a1-a37f-e8dcc40c6866)
 
 ## 🚀 Getting Started
 
