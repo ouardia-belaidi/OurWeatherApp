@@ -4,6 +4,7 @@ import {  Alert,
   Platform,
   TouchableOpacity,View, Text, StyleSheet,Linking } from 'react-native';
 import * as Location from 'expo-location';
+import { router } from 'expo-router';
 
 
 interface locationCoordinates {
@@ -17,34 +18,29 @@ export function useLocation() : locationCoordinates {
         longitude : null,
     });
 
-    //const [permissionGranted,setPermissionGranted] = useState<boolean|null>(null);
-
     const requestLocationPermission = async() =>{
         const openAppSettings = () => {
-               // if (Platform.OS === 'ios') {
-                  //  Linking.openURL('app-settings:');
-               // } else {
-                    Linking.openSettings(); // Android
-               // }
+              Linking.openSettings(); //android
             };
         try{
             const { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
             Alert.alert(
                 'Permission Denied',
-                'We need location permission to show weather info. Please enable it in Settings.',
-                [
+                'We need location permission to show more accurate weather info. Please enable it in Settings or search manuallly.',
+                [ 
                     { text: 'Open Settings', onPress: openAppSettings },
-                    { text: 'Cancel', style: 'cancel' },
+                    { text: 'Search Manually', onPress: () => router.push('/search-history') },
+                    { text: 'Cancel', style: 'cancel'},
                     ]
                 );
             return;
             }
-            
-            const loc = await Location.getCurrentPositionAsync({});
-            const {latitude , longitude } = loc.coords;
-            setLocation({latitude,longitude});
-    
+            else{
+                const loc = await Location.getCurrentPositionAsync({});
+                const {latitude , longitude } = loc.coords;
+                setLocation({latitude,longitude});
+            }
         }
         catch (error){
             console.error("Error while asking for location:",error);

@@ -1,5 +1,4 @@
 // themes.js
-
 const weatherThemes = {
   clear: {
     day: {

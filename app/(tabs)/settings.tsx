@@ -6,30 +6,26 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import { Link } from 'expo-router';
 
-const LANGUAGES = ['Français', 'Anglais'];
+const LANGUAGES = ['Français', 'English'];
 
 export default function SettingsScreen() {
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [unitInCelsius, setUnitInCelsius] = useState(true);
   const [showAirQuality, setShowAirQuality] = useState(true);
   const [use24Hour, setUse24Hour] = useState(true);
-  const [language, setLanguage] = useState('Français');
+  const [language, setLanguage] = useState('English');
   const [modalVisible, setModalVisible] = useState(false);
 
-  // Chargement des prefs au démarrage
+  //Chargement des prefs au démarrage
   useEffect(() => {
     (async () => {
       try {
         const notif = await AsyncStorage.getItem('notificationsEnabled');
         const unit = await AsyncStorage.getItem('unitInCelsius');
-        const air = await AsyncStorage.getItem('showAirQuality');
-        const hour = await AsyncStorage.getItem('use24Hour');
         const lang = await AsyncStorage.getItem('language');
 
         if (notif !== null) setNotificationsEnabled(notif === 'true');
         if (unit !== null) setUnitInCelsius(unit === 'true');
-        if (air !== null) setShowAirQuality(air === 'true');
-        if (hour !== null) setUse24Hour(hour === 'true');
         if (lang !== null) setLanguage(lang);
       } catch (e) {
         console.log('Erreur chargement préférences', e);
@@ -66,7 +62,7 @@ export default function SettingsScreen() {
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.title}>Paramètres</Text>
+      <Text style={styles.title}>Settings</Text>
 
       {/* Notifications */}
       <View style={styles.settingRow}>
@@ -81,48 +77,30 @@ export default function SettingsScreen() {
       {/* Unité */}
       <View style={styles.settingRow}>
         <Ionicons name="thermometer-outline" size={24} color="#333" style={styles.icon} />
-        <Text style={styles.label}>Unité : {unitInCelsius ? '°C' : '°F'}</Text>
+        <Text style={styles.label}>Unity : {unitInCelsius ? '°C' : '°F'}</Text>
         <Switch
           value={unitInCelsius}
           onValueChange={setUnitInCelsius}
         />
       </View>
 
-      {/* Format horaire */}
-      <View style={styles.settingRow}>
-        <Ionicons name="time-outline" size={24} color="#333" style={styles.icon} />
-        <Text style={styles.label}>Format horaire : {use24Hour ? '24h' : '12h'}</Text>
-        <Switch
-          value={use24Hour}
-          onValueChange={setUse24Hour}
-        />
-      </View>
 
       {/* Langue */}
       <TouchableOpacity style={styles.settingRow} onPress={() => setModalVisible(true)}>
         <Ionicons name="language-outline" size={24} color="#333" style={styles.icon} />
-        <Text style={styles.label}>Langue : {language}</Text>
+        <Text style={styles.label}>Language : {language}</Text>
         <Ionicons name="chevron-forward-outline" size={20} color="#888" />
       </TouchableOpacity>
 
-      {/* Qualité de l'air */}
-      <View style={styles.settingRow}>
-        <Ionicons name="cloud-outline" size={24} color="#333" style={styles.icon} />
-        <Text style={styles.label}>Afficher la qualité de l'air</Text>
-        <Switch
-          value={showAirQuality}
-          onValueChange={setShowAirQuality}
-        />
-      </View>
 
       {/* À propos */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>À propos</Text>
+        <Text style={styles.sectionTitle}>About</Text>
         <TouchableOpacity>
           <View style={styles.aboutRow}>
             <Ionicons name="information-circle-outline" size={24} color="#007AFF" style={styles.icon} />
             <Link href="/about" style={styles.link}>
-              A propos de notre application
+              About our application
             </Link>
           </View>
         </TouchableOpacity>
@@ -137,7 +115,7 @@ export default function SettingsScreen() {
       >
         <View style={styles.modalOverlay}>
           <View style={styles.modalContainer}>
-            <Text style={styles.modalTitle}>Choisissez la langue</Text>
+            <Text style={styles.modalTitle}>Choose language</Text>
             {LANGUAGES.map((lang) => (
               <Pressable
                 key={lang}

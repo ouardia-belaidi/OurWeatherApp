@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useLocation } from '@/hooks/useLocation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router, useLocalSearchParams } from 'expo-router';
-import SearchHistory from '@/app/search-history';
+
 interface City {
   city : string;
   handleSearch: (newCity: string) => Promise<void>;
@@ -28,8 +28,7 @@ export function useSearch() : City{
         setCity(newCity);
         await saveToHistory(newCity);
         Keyboard.dismiss();
-
-        router.replace(`/?city=${newCity}`); // yyyyyyyyy
+        router.replace(`/?city=${newCity}`); 
     };
 
     const saveToHistory = async (city: string) => {
