@@ -19,6 +19,8 @@ export default function CurrentWeatherCard( {data} :CurrentWeatherProps){
 
                 <Text style={styles.temp}>{Math.round(data.main.temp)}°C</Text>
                 <Text style={styles.condition}>{data.weather[0].main}</Text>
+                <Text style={styles.details}>Max : {data.main.temp_max !== null ? `${Math.round(data.main.temp_max)}°` : "--"}    Min : {data.main.temp_min !== null ? `${Math.round(data.main.temp_min)}°` : "--"}</Text>
+                <Text style={styles.wind}>Wind : {data.wind.speed !== null ? `${Math.round(data.wind.speed)} Km/h` : "--"}</Text>  
         </View>
     );
 }
@@ -27,7 +29,7 @@ const styles = StyleSheet.create({
   card: {
     width: 300,
     alignItems: 'center',
-    padding : 10,
+    padding : 12,
     backgroundColor: '#ffffff30',
     borderRadius: 20,
     marginTop : 16,
@@ -49,6 +51,16 @@ const styles = StyleSheet.create({
   },
   condition: {
     fontSize: 18,
+    color: '#eee',
+  },
+  details: {
+    fontSize: 16,
+    marginTop: 12,
+    color: '#eee',
+  },
+  wind: {
+    fontSize: 16,
+    marginTop: 2,
     color: '#eee',
   },
 });

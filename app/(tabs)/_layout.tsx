@@ -3,18 +3,14 @@ import { Ionicons } from "@expo/vector-icons";
 
 export default function TabsLayout() {
   return(
-    <Tabs 
-      /*screenOptions={{
-      tabBarActiveTintColor : "#ffd33d",
+    <Tabs screenOptions={{
+        tabBarActiveTintColor: "#0083FF",
+        tabBarInactiveTintColor: "#888",
         headerStyle: {
-          backgroundColor: '#25292e',
+          backgroundColor: "#ffffff30",
         },
-        headerShadowVisible: false,
-        headerTintColor: '#fff',
-        tabBarStyle: {
-        backgroundColor: '#25292e',
-        },
-      }}*/>
+
+      }}>
       <Tabs.Screen 
         name ="index" 
         options={{ 
@@ -25,13 +21,14 @@ export default function TabsLayout() {
           ), headerShown:false 
         }}/>  
       <Tabs.Screen 
-        name ="about" 
+        name ="settings" 
         options={{ 
-          title : 'About',
-          tabBarIcon : ({focused,color}) => (<Ionicons name={focused ? "information-circle" : "information-circle"}
+          title : 'Settings',
+          tabBarIcon : ({focused,color}) => (<Ionicons name={focused ? "settings" : "settings"}
           size={24}
           color={color}/>
           ),
+          headerShown:false,
         }}/>
       <Tabs.Screen name ="not-found" options = {{ title: "Oups! Not Found" }}/>
     </Tabs> 
