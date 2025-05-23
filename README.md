@@ -13,6 +13,7 @@ This app displays current weather, hourly and weekly forecasts, weather-based ti
 * 🧠 Modular hooks and reusable components
 
 ## 🏗️ Project Structure
+'''
 app/
 ├── (tabs)/
 │   ├── index.tsx                # Home screen with all weather data
@@ -39,7 +40,7 @@ themes/
 utils/
 ├── getTips.ts                  # Get weather tips based on condition
 ├── history.ts                  # AsyncStorage save/load logic
-
+'''
 
 ## 🚀 Getting Started
 
