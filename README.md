@@ -85,4 +85,7 @@ utils/
 
 ---
 
-**Developed with ❤️ by Dihia , Lynda & Ouardia .**
+**Team :** 
+**- BELAIDI Ouardia**
+**- MAKOUCH Dihia**
+**- SLIMANI Lynda**
