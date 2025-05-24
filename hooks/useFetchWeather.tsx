@@ -1,5 +1,5 @@
 import React,{useEffect, useState} from 'react';
-import { View, Text, StyleSheet, ImageBackground, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, SafeAreaView, Alert } from 'react-native';
 import { BlurView } from "expo-blur";
 import { ScrollView,GestureHandlerRootView } from 'react-native-gesture-handler';
 import axios from 'axios';
@@ -40,7 +40,7 @@ export function useFetchWeather(latitude : number | null,longitude:number | null
                 date: new Date(day.dt * 1000).toLocaleDateString('en-US', { weekday: 'short', day: 'numeric' }),
                 temp: Math.round(day.main.temp),
                 condition: day.weather[0].main,
-                icon: `https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`
+                icon: `https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`,
             }));
             setWeeklyData(weekly);
         setHourlyData(response.data.list.slice(0, 15)); 
@@ -79,7 +79,11 @@ export function useFetchWeather(latitude : number | null,longitude:number | null
         setCurrentData(currentRes.data);
 
         } catch (error) {
-        console.error(error);
+            Alert.alert(
+                'Invalid City',
+                `No weather data found for "${city}". Please check the spelling and try again.`,
+            [{ text: 'OK' }]
+            );
         }
     }
     return {currentData,hourlyData,weeklyData}
