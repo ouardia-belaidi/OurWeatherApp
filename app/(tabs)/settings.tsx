@@ -5,6 +5,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import { Link } from 'expo-router';
+//import { useLanguage } from '../i18n/i18n';
 
 const LANGUAGES = ['Français', 'English'];
 

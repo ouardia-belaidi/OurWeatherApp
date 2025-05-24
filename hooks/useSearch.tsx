@@ -7,7 +7,6 @@ import { useLocation } from '@/hooks/useLocation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router, useLocalSearchParams } from 'expo-router';
 
-
 interface City {
   city : string;
   weatherData : any,
@@ -20,13 +19,31 @@ export function useSearch() : City{
     const [weatherData, setWeatherData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const params = useLocalSearchParams();
-    const [city, setCity] = useState(typeof params.city === "string" ? params.city : "Tizi-Ouzou");
+    const [city, setCity] = useState(typeof params.city === "string"? params.city:"Tizi-Ouzou");
     
     useEffect(() => {
-    if (typeof params.city === "string" && params.city !== city) {
-      setCity(params.city);
-    }
-    }, [params.city]);
+      const loadCity = async () => {
+      if (typeof params.city === "string" && params.city !== city) {
+        setCity(params.city);
+      } else {
+        try {
+          const stored = await AsyncStorage.getItem('search-history');
+          const history = stored ? JSON.parse(stored) : [];
+          if (history.length > 0) {
+            setCity(history[0]); // Use last searched city
+          } else {
+            setCity("Tizi-Ouzou"); // Fallback
+          }
+        } catch (e) {
+          console.error("Error reading search-history:", e);
+          //setCity("Tizi-Ouzou");
+        }
+      }
+  };
+
+  loadCity();
+  }, [params.city]);
+
      useEffect(() => {
     if (city) fetchWeatherByCity(city);
     }, [city]);
