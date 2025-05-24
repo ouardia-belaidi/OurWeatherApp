@@ -2,22 +2,19 @@ import React,{useEffect, useState} from 'react';
 import { View, Text, StyleSheet, ImageBackground, SafeAreaView, Keyboard } from 'react-native';
 import { BlurView } from "expo-blur";
 import { ScrollView,GestureHandlerRootView } from 'react-native-gesture-handler';
-import weatherThemes from '../themes/theme2';
 import { getTheme } from '../themes/theme';
-import WeatherCard  from "../../components/WeatherCard";
 import WeeklyForecast from "../../components/WeeklyForecast";
 import CurrentWeatherCard from "../../components/CurrentWeatherCard";
 import Tips from '@/components/Tips';
-import axios from 'axios';
 import DailyForcast from '@/components/DailyForecast';
 import { useLocation } from '@/hooks/useLocation';
 import { useFetchWeather } from '@/hooks/useFetchWeather';
 import { getWeatherTips } from '@/utils/getTips';
 import { router, useLocalSearchParams, useRouter } from 'expo-router';
 import SearchBar from '@/components/SearchBar';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import SearchHistory from '../search-history';
 import { useSearch } from '@/hooks/useSearch';
+import { ActivityIndicator } from 'react-native';
+
 
 export default function HomeScreen() {
   const location = useLocation();
@@ -33,6 +30,8 @@ export default function HomeScreen() {
   const currentTime = Math.floor(Date.now() / 1000);
   const tipsData = getWeatherTips(currentCondition ?? 'default');
   const theme = getTheme(currentCondition ?? 'default', currentTime,sunriseUTC,sunsetUTC);
+  const isLoading = !currentData || !hourlyData.length || !weeklyData.length;
+
   //console.log(theme)
   //console.log(new Date(currentTime * 1000).getHours())
   //console.log("Sunrise:", new Date(sunriseUTC * 1000).toLocaleTimeString());
@@ -44,7 +43,13 @@ export default function HomeScreen() {
         <ImageBackground source={theme.backgroundGif} style={styles.background} resizeMode="cover">
           <BlurView intensity={30} tint="light" style={styles.blurContainer}>
             <ScrollView>
-              <View style={[styles.container, { backgroundColor: `${theme.colors.textMain}90` }]}>
+               {isLoading ? (
+                  <View style={styles.loaderContainer}>
+                    <ActivityIndicator size="large" color="#fff" />
+                    <Text style={{ color: '#fff', marginTop: 10 }}>Loading weather...</Text>
+                  </View>
+                ) : (
+               <View style={[styles.container, { backgroundColor: `${theme.colors.textMain}90` }]}>
                 {/* Barre de recherche */}
                 <SearchBar 
                   onSearch={handleSearch} 
@@ -58,7 +63,7 @@ export default function HomeScreen() {
                 <WeeklyForecast data={weeklyData} />
 
                 <Tips tips={tipsData} />
-              </View>
+              </View>)}
             </ScrollView>    
           </BlurView>
         </ImageBackground>
@@ -86,4 +91,10 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 5,
   },
+  loaderContainer: {
+  flex: 1,
+  alignItems: 'center',
+  justifyContent: 'center',
+  paddingVertical: 50,
+},
 });

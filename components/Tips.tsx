@@ -22,7 +22,7 @@ const Tips: React.FC<TipsProps> = ({ tips }) => {
 
   return (
     <View style = {styles.container}>
-      <Text style={[styles.title]}>Astuces de vie</Text>
+      <Text style={[styles.title]}>Lifestyle Tips</Text>
       
       <View style={styles.grid}>
         {tips.map((tip, index) => (
