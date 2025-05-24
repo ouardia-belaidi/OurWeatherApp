@@ -13,7 +13,6 @@ This app displays current weather, hourly and weekly forecasts, weather-based ti
 * 🧠 Modular hooks and reusable components
 
 ## 🏗️ Project Structure
-![image](https://github.com/user-attachments/assets/78a31b8f-0c77-43a1-a37f-e8dcc40c6866)
 
 ## 🚀 Getting Started
 
@@ -27,7 +26,7 @@ This app displays current weather, hourly and weekly forecasts, weather-based ti
 
 1. Clone the repository:
 
-   git clone https://github.com/yourusername/MyWeatherApp.git
+   git clone "link to repository"
    cd MyWeatherApp
 
 
