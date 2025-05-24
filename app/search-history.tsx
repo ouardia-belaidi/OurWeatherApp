@@ -4,7 +4,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter, useFocusEffect } from 'expo-router';
 import SearchBar from '@/components/SearchBar';
 import { saveToHistory } from '@/utils/history';
-import { IconSymbol } from '@/app-example/components/ui/IconSymbol.ios';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function SearchHistory() {
@@ -24,7 +23,7 @@ export default function SearchHistory() {
     fetchHistory();
   }, []);
 
-  // Recharger quand on revient sur l’écran
+  //Recharger quand on revient sur l’écran
   useFocusEffect(
     React.useCallback(() => {
       fetchHistory();
@@ -55,12 +54,8 @@ export default function SearchHistory() {
   return (
     <View style={styles.container}>
       <SearchBar onSearch={handleSearch}/>
-      {/*<View style={styles.item}>
-        <Text style={styles.title}>Search history </Text>
-        <Ionicons  name={"time-outline"} size={28} color="#007AFF"/>
-      </View>*/}
       {history.length === 0 ? (
-        <Text style={styles.empty}>Aucune recherche récente.</Text>
+        <Text style={styles.empty}>No recent searches</Text>
       ) : (
         <FlatList
           data={history}
@@ -93,7 +88,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ccc',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between', // ensures 2 items per row
+    justifyContent: 'space-between', //ensures 2 items per row
   },
   empty: {
     fontSize: 16,

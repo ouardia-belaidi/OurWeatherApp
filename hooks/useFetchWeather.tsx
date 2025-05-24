@@ -1,9 +1,7 @@
 import React,{useEffect, useState} from 'react';
 import { View, Text, StyleSheet, ImageBackground, SafeAreaView, Alert } from 'react-native';
-import { BlurView } from "expo-blur";
-import { ScrollView,GestureHandlerRootView } from 'react-native-gesture-handler';
 import axios from 'axios';
-import { useLocation } from '@/hooks/useLocation';
+import { router } from 'expo-router';
  
 
 interface WeatherData {
@@ -57,32 +55,31 @@ export function useFetchWeather(latitude : number | null,longitude:number | null
 
     const fetchWeatherBycity = async(city:string) => {
         try {
-        const response = await axios.get(
-           `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${API_KEY}`
+            const response = await axios.get(
+            `https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${API_KEY}`
+            );
+            const list = response.data.list;
 
-        );
-        const list = response.data.list;
+            const days = list.filter((item: any) => item.dt_txt.includes('12:00:00')).slice(0, 7); 
+                const weekly = days.map((day: any) => ({
+                    date: new Date(day.dt * 1000).toLocaleDateString('en-US', { weekday: 'short', day: 'numeric' }),
+                    temp: Math.round(day.main.temp),
+                    condition: day.weather[0].main,
+                    icon: `https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`
+                }));
+                setWeeklyData(weekly);
+            setHourlyData(response.data.list.slice(0, 15)); 
 
-        const days = list.filter((item: any) => item.dt_txt.includes('12:00:00')).slice(0, 7); 
-            const weekly = days.map((day: any) => ({
-                date: new Date(day.dt * 1000).toLocaleDateString('en-US', { weekday: 'short', day: 'numeric' }),
-                temp: Math.round(day.main.temp),
-                condition: day.weather[0].main,
-                icon: `https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`
-            }));
-            setWeeklyData(weekly);
-        setHourlyData(response.data.list.slice(0, 15)); 
-
-        const currentRes = await axios.get(
-            `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${API_KEY}`
-        );
-        setCurrentData(currentRes.data);
+            const currentRes = await axios.get(
+                `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${API_KEY}`
+            );
+            setCurrentData(currentRes.data);
 
         } catch (error) {
             Alert.alert(
                 'Invalid City',
                 `No weather data found for "${city}". Please check the spelling and try again.`,
-            [{ text: 'OK' }]
+            [{ text: 'OK', onPress : () => router.push('/search-history')}]
             );
         }
     }
