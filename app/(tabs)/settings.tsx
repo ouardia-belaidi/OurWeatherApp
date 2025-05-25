@@ -5,29 +5,34 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
 import { Link } from 'expo-router';
-//import { useLanguage } from '../i18n/i18n';
+import { useLanguage } from '../i18n/i18n';
+import { useLocation } from '@/hooks/useLocation';
 
 const LANGUAGES = ['Français', 'English'];
 
 export default function SettingsScreen() {
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+  const [locationEnabled, setLocationEnabled] = useState(false);
   const [unitInCelsius, setUnitInCelsius] = useState(true);
   const [showAirQuality, setShowAirQuality] = useState(true);
   const [use24Hour, setUse24Hour] = useState(true);
-  const [language, setLanguage] = useState('English');
   const [modalVisible, setModalVisible] = useState(false);
+  const { language, setLanguage, t } = useLanguage(); // utilise le contexte
+
 
   //Chargement des prefs au démarrage
   useEffect(() => {
     (async () => {
       try {
         const notif = await AsyncStorage.getItem('notificationsEnabled');
+        const location = await AsyncStorage.getItem('locationEnabled');
         const unit = await AsyncStorage.getItem('unitInCelsius');
         const lang = await AsyncStorage.getItem('language');
 
         if (notif !== null) setNotificationsEnabled(notif === 'true');
+        if (location) setLocationEnabled(location === 'true');
         if (unit !== null) setUnitInCelsius(unit === 'true');
-        if (lang !== null) setLanguage(lang);
+        if (lang !== null) setLanguage(language);
       } catch (e) {
         console.log('Erreur chargement préférences', e);
       }
@@ -38,6 +43,10 @@ export default function SettingsScreen() {
   useEffect(() => {
     AsyncStorage.setItem('notificationsEnabled', notificationsEnabled.toString());
   }, [notificationsEnabled]);
+
+  useEffect(() => {
+    AsyncStorage.setItem('locationEnabled', locationEnabled.toString());
+  }, [locationEnabled]);
 
   useEffect(() => {
     AsyncStorage.setItem('unitInCelsius', unitInCelsius.toString());
@@ -51,15 +60,13 @@ export default function SettingsScreen() {
     AsyncStorage.setItem('use24Hour', use24Hour.toString());
   }, [use24Hour]);
 
-  useEffect(() => {
-    AsyncStorage.setItem('language', language);
-  }, [language]);
-
   // Sélecteur langue
-  const selectLanguage = (lang: string) => {
-    setLanguage(lang);
-    setModalVisible(false);
-  };
+ const selectLanguage = (lang: string) => {
+  if (lang === 'Français') setLanguage('fr');
+  else setLanguage('en');
+  setModalVisible(false);
+};
+
 
   return (
     <ScrollView style={styles.container}>
@@ -72,6 +79,18 @@ export default function SettingsScreen() {
         <Switch
           value={notificationsEnabled}
           onValueChange={setNotificationsEnabled}
+          
+        />
+      </View>
+
+      {/* Location */}
+      <View style={styles.settingRow}>
+        <Ionicons name="location-outline" size={24} color="#333" style={styles.icon} />
+        <Text style={styles.label}>Location</Text>
+        <Switch
+          value={locationEnabled}
+          onValueChange={ () =>  {Linking.openSettings();
+            setLocationEnabled}}
         />
       </View>
 
@@ -89,7 +108,9 @@ export default function SettingsScreen() {
       {/* Langue */}
       <TouchableOpacity style={styles.settingRow} onPress={() => setModalVisible(true)}>
         <Ionicons name="language-outline" size={24} color="#333" style={styles.icon} />
-        <Text style={styles.label}>Language : {language}</Text>
+        <Text style={styles.label}>
+          Language: {language === 'fr' ? 'Français' : 'English'}
+        </Text>
         <Ionicons name="chevron-forward-outline" size={20} color="#888" />
       </TouchableOpacity>
 

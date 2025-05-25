@@ -1,15 +1,20 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, ImageBackground } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
+import { getTheme } from './themes/theme';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function Details() {
   const { data } = useLocalSearchParams();
   const weather = data ? JSON.parse(data as string) : null;
   if (!weather) return <Text style={styles.header}>No weather data available</Text>;
+  const theme = getTheme(weather.condition, weather.currentTime,weather.sunriseUTC,weather.sunsetUTC);
 
   return (
+    <ImageBackground source={theme.backgroundGif} style={styles.background} resizeMode="cover">
     <ScrollView contentContainerStyle={styles.container}>
       <View style={{padding : 10,}}>
+        <Ionicons name="location-outline" size={24} color="#333" style={styles.icon} />
           <Text style={styles.header}>{weather.name}</Text>
       </View>
 
@@ -97,19 +102,23 @@ export default function Details() {
         </View>
       </View>
     </ScrollView>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+  },
   container: {
     padding: 16,
-    backgroundColor: '#eaf1f8',
+    //backgroundColor: '#eaf1f8',
     flexGrow: 1,
   },
   header: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#fff',
     marginBottom: 16,
     textAlign: 'left',
   },
@@ -146,4 +155,5 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#333',
   },
+  icon: { marginRight: 10 },
 });

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 const AboutScreen = () => {
   const [showFeatures, setShowFeatures] = useState(false);
@@ -9,7 +10,7 @@ const AboutScreen = () => {
     <ScrollView contentContainerStyle={styles.container}>
 
       <Image
-        source={require('../assets/logo/img.jpg')}
+        source={require('../assets/logo/logo.png')}
         style={styles.logo}
       />
 
@@ -24,7 +25,11 @@ const AboutScreen = () => {
         >
           <View style={styles.buttonContent}>
             <Text style={styles.buttonText}>Contact Us</Text>
-            <Text style={styles.buttonText}>{showEmail ? '▼' : '▲'}</Text>
+            <Text style={styles.buttonText}><Ionicons 
+              name={showEmail ? "chevron-down" : "chevron-up"} 
+              size={24} 
+              color="black" 
+            /></Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -43,19 +48,23 @@ const AboutScreen = () => {
         >
           <View style={styles.buttonContent}>
             <Text style={styles.buttonText}>Features</Text>
-            <Text style={styles.buttonText}>{showFeatures ? '▼' : '▲'}</Text>
+            <Text style={styles.buttonText}><Ionicons 
+              name={showFeatures ? "chevron-down" : "chevron-up"} 
+              size={24} 
+              color="black" 
+            /></Text>
           </View>
         </TouchableOpacity>
       </View>
 
       {showFeatures && (
         <View style={styles.featuresContainer}>
-          <Text style={styles.featureItem}>•  Fetch weather by city or current location (with permissions)</Text>
-          <Text style={styles.featureItem}>•  5-days and hourly weather forecast</Text>
-          <Text style={styles.featureItem}>•  Dynamic UI themes based on weather condition and time of day</Text>
-          <Text style={styles.featureItem}>•  Lifestyle tips based on forecast</Text>
-          <Text style={styles.featureItem}>•  Search for cities and store search history</Text>
-          <Text style={styles.featureItem}>•  Modular hooks and reusable components</Text>
+          <Text style={styles.featureItem}>- Fetch weather by city or current location (with permissions)</Text>
+          <Text style={styles.featureItem}>- 5-days and hourly weather forecast</Text>
+          <Text style={styles.featureItem}>- Realtime weather details</Text>
+          <Text style={styles.featureItem}>- Dynamic UI themes based on weather condition and time of day</Text>
+          <Text style={styles.featureItem}>- Lifestyle tips based on forecast</Text>
+          <Text style={styles.featureItem}>- Search for cities and store search history</Text>
         </View>
       )}
 
@@ -88,11 +97,14 @@ const styles = StyleSheet.create({
   },
   card: {
     width: '100%',
-    backgroundColor: '#eee',
+    backgroundColor: '#fff',
     borderRadius: 10,
     overflow: 'hidden',
-    marginTop: 40,
+    marginTop: 30,
     marginBottom: 0,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
   },
   button: {
     padding: 15,
@@ -101,7 +113,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 16,
-    color: '#000',
+    color: '#444',
   },
   buttonContent: {
     flexDirection: 'row',
@@ -109,7 +121,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   featuresContainer: {
-    width: '100%',
+    marginTop:10,
+    width: '95%',
     paddingHorizontal: 10,
   },
   featureItem: {
@@ -119,7 +132,7 @@ const styles = StyleSheet.create({
   },
   emailContainer: {
     marginTop: 20,
-    backgroundColor: '#eef',
+    //backgroundColor: '#eef',
     padding: 10,
     borderRadius: 8,
   },
